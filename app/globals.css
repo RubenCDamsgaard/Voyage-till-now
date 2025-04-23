@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom gradient text animation */
+@keyframes animatedTextGradient {
+  to {
+    background-position: -200% center;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #000, #5c93ab);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Silver button hover effect */
+.silver-button {
+  background: linear-gradient(to right, #777, #e0e0e0, #777, #777, #e0e0e0, #777);
+  background-size: 250%;
+  background-position: left;
+  transition-duration: 1s;
+}
+
+.silver-button:hover {
+  background-position: right;
+  transition-duration: 1s;
+}
+
+.silver-button-inner {
+  transition-duration: 1s;
+}
+
+.silver-button:hover .silver-button-inner {
+  background-position: right;
+  transition-duration: 1s;
+}
+
+/* Typing animation container */
+.typing-container {
+  display: inline-block;
+  background: inherit;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.typing-container span {
+  background: inherit;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Hover Border Gradient animation */
+@keyframes sweep {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Arrow shimmer effect - completely revised */
+@keyframes arrowShimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.arrow-shimmer {
+  position: relative;
+  display: inline-block;
+  color: #c0c0c0;
+}
+
+.arrow-shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: arrowShimmer 2s infinite linear;
+  pointer-events: none;
+}
+
+/* Card styling */
+.bgsilver {
+  background: linear-gradient(135deg, #ffffff, #d9d9d9, #f2f2f2);
+  padding: 1px;
+  border-radius: 1.2rem;
+  box-shadow: 0px 1rem 1.5rem -0.9rem #000000e1;
+  max-width: 300px;
+}
+
+.card {
+  font-size: 1rem;
+  color: #d1d5db; /* light grey text */
+  background: linear-gradient(135deg, #f5f5f5 0%, #cfcfcf 30%, #a8a8a8 50%, #cfcfcf 70%, #f5f5f5 100%);
+  padding: 1.5rem;
+  border-radius: 1.2rem;
+  box-shadow: inset 0 1px 0 #ffffff80, inset 0 -1px 0 #00000033;
+}
+
+/* Glow effect for featured card */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 15px 5px rgba(192, 192, 192, 0.3), 0 0 30px 10px rgba(192, 192, 192, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px 8px rgba(192, 192, 192, 0.4), 0 0 40px 15px rgba(192, 192, 192, 0.15);
+  }
+}
+
+.glow-effect {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Text Animate */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Grid background for contact page */
+.grid-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  background: #000000;
+  --gap: 5em;
+  --line: 1px;
+  --color: rgba(255, 255, 255, 0.2);
+
+  background-image: linear-gradient(
+      -90deg,
+      transparent calc(var(--gap) - var(--line)),
+      var(--color) calc(var(--gap) - var(--line) + 1px),
+      var(--color) var(--gap)
+    ),
+    linear-gradient(
+      0deg,
+      transparent calc(var(--gap) - var(--line)),
+      var(--color) calc(var(--gap) - var(--line) + 1px),
+      var(--color) var(--gap)
+    );
+  background-size: var(--gap) var(--gap);
+  z-index: -1;
+}
