@@ -14,6 +14,7 @@ interface WarpBackgroundProps extends HTMLAttributes<HTMLDivElement> {
   beamDelayMin?: number
   beamDuration?: number
   gridColor?: string
+  seed?: number
 }
 
 const Beam = ({
@@ -76,8 +77,19 @@ export const WarpBackground: React.FC<WarpBackgroundProps> = ({
   beamDelayMin = 0,
   beamDuration = 10,
   gridColor = "rgba(192, 192, 192, 0.3)", // Default to semi-transparent silver
+  seed = 123,
   ...props
 }) => {
+  // Create a seeded random function
+  const seededRandom = (min: number, max: number, seedOffset = 0) => {
+    const seedValue = seed + seedOffset;
+    // Simple seeded random function
+    const x = Math.sin(seedValue) * 10000;
+    const rand = x - Math.floor(x);
+    return min + rand * (max - min);
+  };
+
+  // Use the seeded random function for all random values
   const generateBeams = useCallback(() => {
     const beams = []
     const cellsPerSide = Math.floor(100 / beamSize)
@@ -86,11 +98,11 @@ export const WarpBackground: React.FC<WarpBackgroundProps> = ({
     for (let i = 0; i < beamsPerSide; i++) {
       const x = Math.floor(i * step)
       // Reduce the delay range to make beams appear sooner
-      const delay = Math.random() * (beamDelayMax / 3 - beamDelayMin) + beamDelayMin
+      const delay = seededRandom(beamDelayMin, beamDelayMax)
       beams.push({ x, delay })
     }
     return beams
-  }, [beamsPerSide, beamSize, beamDelayMax, beamDelayMin])
+  }, [beamsPerSide, beamSize, beamDelayMax, beamDelayMin, seed])
 
   const topBeams = useMemo(() => generateBeams(), [generateBeams])
   const rightBeams = useMemo(() => generateBeams(), [generateBeams])

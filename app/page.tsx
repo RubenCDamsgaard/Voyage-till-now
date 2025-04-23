@@ -7,6 +7,7 @@ import { TextAnimate } from "@/components/magicui/text-animate"
 import Script from "next/script"
 import Image from "next/image"
 import Link from "next/link"
+import { PartnersCarousel } from "@/components/partners-carousel"
 
 export default function Home() {
   return (
@@ -27,6 +28,7 @@ export default function Home() {
         beamsPerSide={4}
         beamSize={5}
         beamDuration={10} // Increased from 3 to 10 for slower movement
+        seed={123}
       >
         <div className="container mx-auto px-4">
           {/* Hero Section with centered content using flexbox */}
@@ -92,9 +94,9 @@ export default function Home() {
               direction="center"
               duration={1.5}
               delay={0.2}
-              className="relative md:transform md:-translate-y-4"
+              className="relative"
             >
-              <div className="bgsilver mx-auto relative z-20 shadow-2xl glow-effect">
+              <div className="bgsilver mx-auto relative z-20 shadow-2xl glow-effect md:transform md:-translate-y-4">
                 <div className="card flex flex-col items-center justify-center text-center py-8">
                   <Image
                     src="/images/voyage-arise-logo.png"
@@ -145,6 +147,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Add the partners carousel */}
+      <PartnersCarousel />
     </main>
   )
 }
+
+

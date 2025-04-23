@@ -21,11 +21,12 @@ export function DirectionalFade({
   children,
   direction = "center",
   distance = 100,
-  duration = 1.2, // Increased from 0.8 to 1.2 for smoother animation
+  duration = 1.2,
   delay = 0,
   className,
 }: DirectionalFadeProps) {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const animationRef = useRef<gsap.core.Tween | null>(null)
 
   useEffect(() => {
     // Register ScrollTrigger plugin
@@ -38,6 +39,11 @@ export function DirectionalFade({
     const initialX = direction === "left" ? -distance : direction === "right" ? distance : 0
     const initialY = direction === "center" ? 50 : 0
 
+    // Store the original transform if any
+    const computedStyle = window.getComputedStyle(section)
+    const originalTransform = computedStyle.transform !== 'none' ? computedStyle.transform : ''
+
+    // Apply initial state
     gsap.set(section, {
       x: initialX,
       y: initialY,
@@ -48,41 +54,63 @@ export function DirectionalFade({
     // Create scroll trigger
     const trigger = ScrollTrigger.create({
       trigger: section,
-      start: "top 85%", // Start animation a bit earlier (changed from 80% to 85%)
+      start: "top 85%",
       onEnter: () => {
+        // Kill any existing animation
+        if (animationRef.current) {
+          animationRef.current.kill()
+        }
+        
         // Animate in when scrolled into view
-        gsap.to(section, {
+        animationRef.current = gsap.to(section, {
           x: 0,
           y: 0,
           opacity: 1,
           scale: 1,
           duration: duration,
           delay: delay,
-          ease: "power2.out", // Using power2.out for smoother animation
-          clearProps: "transform", // Clear transform properties after animation completes
+          ease: "power2.out",
+          onComplete: () => {
+            // Don't clear any props to prevent jumping
+          }
         })
       },
       onLeaveBack: () => {
+        // Kill any existing animation
+        if (animationRef.current) {
+          animationRef.current.kill()
+        }
+        
         // Reset when scrolling back up
-        gsap.to(section, {
+        animationRef.current = gsap.to(section, {
           x: initialX,
           y: initialY,
           opacity: 0,
           scale: direction === "center" ? 1 : 0.95,
-          duration: duration / 1.5, // Slightly faster reset animation
-          ease: "power1.in", // Using power1.in for smoother reset
+          duration: duration / 1.5,
+          ease: "power1.in",
         })
       },
     })
 
     // Cleanup
     return () => {
+      if (animationRef.current) {
+        animationRef.current.kill()
+      }
       trigger.kill()
     }
   }, [direction, distance, duration, delay])
 
   return (
-    <div ref={sectionRef} className={cn("overflow-visible", direction === "center" ? "z-10" : "z-0", className)}>
+    <div 
+      ref={sectionRef} 
+      className={cn(
+        "overflow-visible will-change-transform", 
+        direction === "center" ? "z-10" : "z-0", 
+        className
+      )}
+    >
       {children}
     </div>
   )
