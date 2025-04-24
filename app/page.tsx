@@ -8,6 +8,16 @@ import Script from "next/script"
 import Image from "next/image"
 import Link from "next/link"
 import { PartnersCarousel } from "@/components/partners-carousel"
+import { SilverGradientText } from "@/components/silver-gradient-text"
+
+// Define the silver gradient style to reuse
+const silverGradientStyle = {
+  backgroundImage: 'linear-gradient(rgb(255,255,255) 45%, rgb(170,170,170) 60%, rgb(192,192,192) 74%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
+  textFillColor: 'transparent'
+}
 
 export default function Home() {
   return (
@@ -38,14 +48,17 @@ export default function Home() {
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
             </div>
 
-            <h1 className="font-inter text-6xl md:text-7xl lg:text-8xl mb-12 leading-tight text-gray-100 normal-case font-bold">
-              <TextAnimate duration={0.8} staggerDelay={0.03}>
-                Transforming
-              </TextAnimate>
-              <br />
-              <TextAnimate duration={0.8} staggerDelay={0.03} delay={0.5}>
-                gaming with AI
-              </TextAnimate>
+            <h1 className="font-inter text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-12 leading-none normal-case font-bold overflow-visible relative">
+              <span className="block mobile-tight-text mb-0 md:mb-2">
+                <SilverGradientText duration={0.8} staggerDelay={0.03} className="mobile-hero-text">
+                  We are transforming
+                </SilverGradientText>
+              </span>
+              <span className="block mt-0 md:mt-[-0.3em]">
+                <SilverGradientText duration={0.8} staggerDelay={0.03} delay={0.5} className="extra-descender-space">
+                  gaming with AI
+                </SilverGradientText>
+              </span>
             </h1>
           </section>
         </div>
@@ -62,6 +75,13 @@ export default function Home() {
           direction="topRight"
         />
         <div className="container mx-auto px-4 relative z-10">
+          {/* Silver gradient heading */}
+          <h2 className="text-6xl md:text-7xl lg:text-8xl mb-28 text-center font-bold overflow-visible">
+            <SilverGradientText duration={1} staggerDelay={0.04}>
+              Explore Our Games
+            </SilverGradientText>
+          </h2>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full relative">
             {/* Container 1 - The Voyage: Pathways to Power (Locked) - Fade from left */}
             <DirectionalFade direction="left" distance={100} duration={1.5} delay={0.1}>
@@ -84,7 +104,7 @@ export default function Home() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-4 text-gray-800">The Voyage: Pathways to Power</h3>
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">The Voyage: <br /> Pathways to Power</h3>
                 </div>
               </div>
             </DirectionalFade>

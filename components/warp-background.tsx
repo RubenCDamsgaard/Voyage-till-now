@@ -73,7 +73,7 @@ export const WarpBackground: React.FC<WarpBackgroundProps> = ({
   className,
   beamsPerSide = 3,
   beamSize = 5,
-  beamDelayMax = 3,
+  beamDelayMax = 0.4,
   beamDelayMin = 0,
   beamDuration = 10,
   gridColor = "rgba(192, 192, 192, 0.3)", // Default to semi-transparent silver
