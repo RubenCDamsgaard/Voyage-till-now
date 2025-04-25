@@ -44,7 +44,17 @@ export default function Home() {
         <div className="container mx-auto px-4">
           {/* Hero Section with centered content using flexbox */}
           <section className="min-h-screen flex flex-col items-center justify-center text-center">
-            <div className="relative inline-flex overflow-hidden announcement-banner rounded-full mb-[30px] sm:mb-0">
+            <div 
+              className="relative inline-flex overflow-hidden announcement-banner rounded-full mb-[30px] sm:mb-0"
+              style={{
+                transform: 'translateZ(0)', // Force hardware acceleration
+                WebkitTransform: 'translateZ(0)', // Safari support
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                perspective: '1000',
+                WebkitPerspective: '1000',
+              }}
+            >
               {/* Dark glassmorphism pill content */}
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-black/15 text-white backdrop-blur-sm backdrop-saturate-[1.8] shadow-sm z-10 relative hover:bg-black/40 transition-colors duration-300">
                 <span>The Voyage Arise Site is Live Now</span>
@@ -53,15 +63,19 @@ export default function Home() {
 
               {/* Red inner border beam that moves slower and is longer */}
               <BorderBeam 
-                duration={12} 
-                size={24} 
+                duration={8} 
+                size={18} 
+                initialOffset={25}
                 colorFrom="#ff0000" 
                 colorTo="#ff3333" 
                 className="!bg-gradient-to-r !from-red-600 !to-red-400 inner-border-beam !rounded-full"
                 style={{ 
                   opacity: 0.8,
-                  width: "60px", // Make the beam longer
-                  borderRadius: "9999px" // Ensure border radius works on all devices
+                  width: "50px", // Make the beam longer but slightly smaller for mobile
+                  borderRadius: "9999px", // Ensure border radius works on all devices
+                  willChange: "transform", // Optimize for animations
+                  transform: "translateZ(0)", // Force hardware acceleration
+                  backfaceVisibility: "hidden" // Reduce flickering
                 }}
               />
             </div>
