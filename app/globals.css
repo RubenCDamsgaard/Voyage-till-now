@@ -396,11 +396,35 @@
   .has-descender::after {
     height: 280% !important;
   }
+
+  /* Make the border beam follow the inner border on mobile */
+  .inner-border-beam {
+    transform: scale(0.85) !important; /* Scale down to follow inner border */
+    border-radius: 9999px !important;
+    filter: drop-shadow(0 0 4px rgba(255, 0, 0, 0.5)) !important; /* Add subtle glow */
+  }
 }
 
 /* Desktop-specific hero text styling */
 @media (min-width: 768px) {
   .mobile-hero-text {
     line-height: 1 !important;
+  }
+  
+  /* Announcement banner positioning on desktop ONLY */
+  .announcement-banner {
+    position: absolute !important;
+    top: 30% !important; /* Position it above the heading */
+    z-index: 10 !important;
+    margin-bottom: 0 !important; /* Remove default margin */
+    border-radius: 9999px !important; /* Ensure rounded corners for the BorderBeam */
+    padding: 1px !important; /* Add slight padding to improve border beam visibility */
+  }
+  
+  /* Make the border beam follow the inner border */
+  .inner-border-beam {
+    transform: scale(0.85) !important; /* Scale down to follow inner border */
+    border-radius: 9999px !important;
+    filter: drop-shadow(0 0 4px rgba(255, 0, 0, 0.5)) !important; /* Add subtle glow */
   }
 }

@@ -9,6 +9,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Add experimental optimizeCss support as a workaround
+  experimental: {
+    optimizeCss: true
+  }
 }
 
 export default nextConfig

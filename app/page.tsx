@@ -4,6 +4,7 @@ import { DirectionalFade } from "@/components/directional-fade"
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient"
 import { ParticlesBackground } from "@/components/magicui/particles-background"
 import { TextAnimate } from "@/components/magicui/text-animate"
+import { BorderBeam } from "@/components/magicui/border-beam"
 import Script from "next/script"
 import Image from "next/image"
 import Link from "next/link"
@@ -43,9 +44,26 @@ export default function Home() {
         <div className="container mx-auto px-4">
           {/* Hero Section with centered content using flexbox */}
           <section className="min-h-screen flex flex-col items-center justify-center text-center">
-            <div className="inline-flex items-center gap-2 bg-gray-900/50 px-4 py-2 rounded-full mb-7 border border-gray-800">
-              <span>THE VOYAGE ARISE SITE LIVE NOW</span>
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <div className="relative inline-flex overflow-hidden announcement-banner rounded-full mb-[30px] sm:mb-0">
+              {/* Dark glassmorphism pill content */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-black/15 text-white backdrop-blur-sm backdrop-saturate-[1.8] shadow-sm z-10 relative hover:bg-black/40 transition-colors duration-300">
+                <span>The Voyage Arise Site is Live Now</span>
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              </div>
+
+              {/* Red inner border beam that moves slower and is longer */}
+              <BorderBeam 
+                duration={12} 
+                size={24} 
+                colorFrom="#ff0000" 
+                colorTo="#ff3333" 
+                className="!bg-gradient-to-r !from-red-600 !to-red-400 inner-border-beam !rounded-full"
+                style={{ 
+                  opacity: 0.8,
+                  width: "60px", // Make the beam longer
+                  borderRadius: "9999px" // Ensure border radius works on all devices
+                }}
+              />
             </div>
 
             <h1 className="font-inter text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-12 leading-none normal-case font-bold overflow-visible relative">
@@ -76,7 +94,7 @@ export default function Home() {
         />
         <div className="container mx-auto px-4 relative z-10">
           {/* Silver gradient heading */}
-          <h2 className="text-6xl md:text-7xl lg:text-8xl mb-28 text-center font-bold overflow-visible">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl mb-28 text-center font-bold overflow-visible">
             <SilverGradientText duration={1} staggerDelay={0.04}>
               Explore Our Games
             </SilverGradientText>
