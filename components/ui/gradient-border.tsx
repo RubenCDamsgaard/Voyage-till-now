@@ -1,37 +1,34 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 export function GradientBorder({
-  className,
   children,
-  borderRadius = "rounded-full",
+  border = 1,          // px
+  glow = false,
   pulsingGlow = false,
+  className,
 }: {
-  className?: string;
   children: ReactNode;
-  borderRadius?: string;
+  border?: number;
+  glow?: boolean;
   pulsingGlow?: boolean;
+  className?: string;
 }) {
+  const style: CSSProperties = { "--g-border": `${border}px` } as CSSProperties;
+  
   return (
-    <div
+    <div 
+      style={style} 
       className={cn(
-        "relative inline-flex gradient-frame",
-        borderRadius,
-        pulsingGlow && "glow-pulse",
+        "gradient-frame", 
+        glow && "has-glow", 
+        pulsingGlow && "glow-pulse", 
         className
       )}
     >
-      {/* Glass content */}
-      <div
-        className={cn(
-          "relative z-10 w-full h-full",
-          "backdrop-blur-[4px] backdrop-saturate-[180%]",
-          "bg-black/30",
-          borderRadius
-        )}
-      >
+      <div className="relative z-10 rounded-full backdrop-blur-[4px] backdrop-saturate-[180%] bg-black/30">
         {children}
       </div>
     </div>

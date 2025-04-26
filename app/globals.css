@@ -38,6 +38,10 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    --g-border: 1px;                              /* Border thickness */
+    --g-radius: 9999px;
+    --g-grad: linear-gradient(to top, #c61010 0%, #590202 100%);  /* Red gradient */
   }
 
   .dark {
@@ -504,42 +508,71 @@
   opacity: 0.8;
 }
 
-/* Pulsing glow animation for gradient borders */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 15px rgba(191,127,255,.2); }
-  50%     { box-shadow: 0 0 25px rgba(191,127,255,.6); }
+/* ========= GradientBorder - robust cross-browser solution ========= */
+/* Base wrapper */
+.gradient-frame{ 
+  position: relative; 
+  border-radius: var(--g-radius); 
 }
 
-/* ========= GradientBorder mask ========== */
+/* Mask version (desktop / modern browsers) */
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor){
+  .gradient-frame::before{
+    content: ""; 
+    position: absolute; 
+    inset: 0;
+    padding: var(--g-border); 
+    border-radius: inherit;
+    background: var(--g-grad); 
+    pointer-events: none;
+    opacity: 0.8;  /* Keep the reduced opacity */
+
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+  }
+}
+
+/* Fallback (no mask support) */
+@supports not ((mask-composite: exclude) or (-webkit-mask-composite: xor)){
+  .gradient-frame{
+    background: var(--g-grad);
+    padding: var(--g-border);          /* Creates physical "border" */
+    opacity: 0.8;  /* Keep the reduced opacity */
+  }
+}
+
+/* Optional outer glow */
+.has-glow{ 
+  filter: drop-shadow(0 0 10px rgba(198,16,16,.3)); 
+}
+
+/* Pulsing glow animation */
+@keyframes glowPulse {
+  0%,100% { filter: drop-shadow(0 0 5px rgba(198,16,16,.2)); }
+  50%     { filter: drop-shadow(0 0 15px rgba(198,16,16,.5)); }
+}
+
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* Remove old implementations to avoid conflicts */
 .gradient-frame::before {
   content: "";
   position: absolute;
-  inset: -2px; /* Position outside the container instead of inside */
+  inset: 0;
+  padding: var(--g-border);
   border-radius: inherit;
-  background: linear-gradient(to top, #c61010 0%, #590202 100%); /* Changed top color to #590202 */
-  opacity: 0.8; /* Reduced opacity by 0.2 */
-  box-shadow: 0 0 18px rgba(198,16,16,.5); /* Changed shadow color to match red */
+  background: var(--g-grad);
+  opacity: 0.8;
   pointer-events: none;
 
-  /* Vis bare kant (masker ut content-box) */
-  padding: 1px;                    /* Updated to 1px */
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);        /* border-box     */
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
-
-  /* WebKit-prefiks for Chrome/Safari */
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;        /* = exclude      */
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
 }
-
-/* Pulsende glød (valgfritt) */
-@keyframes glowPulse {
-  0%,100% { box-shadow: 0 0 15px rgba(198,16,16,.2); } /* Changed glow color to match red */
-  50%     { box-shadow: 0 0 25px rgba(198,16,16,.6); } /* Changed glow color to match red */
-}
-.glow-pulse::before { animation: glowPulse 3s ease-in-out infinite; }
 
 /* Any additional CSS can be added below */

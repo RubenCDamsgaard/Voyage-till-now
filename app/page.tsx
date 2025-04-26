@@ -45,7 +45,7 @@ export default function Home() {
           {/* Hero Section with centered content using flexbox */}
           <section className="min-h-screen flex flex-col items-center justify-center text-center">
             <div className="announcement-banner mb-[30px] sm:mb-0">
-              <GradientBorder pulsingGlow>
+              <GradientBorder glow pulsingGlow border={1}>
                 <div className="inline-flex items-center gap-2 px-[15px] py-[6px] rounded-full">
                   <span className="text-[12px]">The Voyage Arise Site is Live Now</span>
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
