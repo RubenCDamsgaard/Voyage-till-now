@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  /* Explicitly disable smooth scrolling */
+  html {
+    scroll-behavior: auto !important;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -397,35 +402,19 @@
     height: 280% !important;
   }
 
-  /* Make the border beam follow the inner border on mobile */
-  .inner-border-beam {
-    transform: scale(0.85) translateZ(0) !important; /* Add translateZ for hardware acceleration */
-    border-radius: 9999px !important;
-    filter: drop-shadow(0 0 4px rgba(255, 0, 0, 0.5)) !important; /* Add subtle glow */
-    will-change: transform, offset-distance !important; /* Hint to browser about what will animate */
-    -webkit-backface-visibility: hidden !important; /* Prevent flickering on Safari */
-    backface-visibility: hidden !important; /* Prevent flickering */
-    -webkit-perspective: 1000 !important; /* 3D acceleration for Safari */
-    perspective: 1000 !important; /* 3D acceleration */
-    -webkit-transform: translate3d(0, 0, 0) scale(0.85) !important; /* Force GPU rendering on Safari */
-  }
-  
-  /* Ensure the announcement banner is properly positioned for the border beam */
+  /* Ensure the announcement banner is properly positioned */
   .announcement-banner {
     position: relative !important;
     overflow: hidden !important;
     isolation: isolate !important; /* Create stacking context for animations */
     z-index: 10 !important;
     border-radius: 9999px !important;
-    padding: 1px !important;
   }
 
   /* Apply performance optimizations to all animations on mobile */
   .announcement-banner, 
   .silver-gradient-text,
-  .inner-border-beam,
-  .arrow-shimmer::after,
-  .border-beam {
+  .arrow-shimmer::after {
     animation-duration: 0.9s !important; /* Slightly faster animations on mobile */
     animation-timing-function: linear !important; /* Linear timing for smoother performance */
     -webkit-transform: translate3d(0, 0, 0);
@@ -435,13 +424,13 @@
     -webkit-perspective: 1000;
     perspective: 1000;
   }
-  
-  /* Reduce animation complexity on low-end devices */
-  @media (prefers-reduced-motion: reduce) {
-    .inner-border-beam {
-      animation-duration: 0.8s !important;
-      filter: none !important; /* Remove drop shadow on reduced motion */
-    }
+
+  /* Ensure gradient border is visible on all screen sizes */
+  .gradient-frame::before {
+    /* Ensure visibility on mobile devices */
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 }
 
@@ -454,20 +443,103 @@
   /* Announcement banner positioning on desktop ONLY */
   .announcement-banner {
     position: absolute !important;
-    top: 30% !important; /* Position it above the heading */
+    top: 33.5% !important; /* Move closer to the heading */
     z-index: 10 !important;
     margin-bottom: 0 !important; /* Remove default margin */
-    border-radius: 9999px !important; /* Ensure rounded corners for the BorderBeam */
-    padding: 1px !important; /* Add slight padding to improve border beam visibility */
-  }
-  
-  /* Make the border beam follow the inner border */
-  .inner-border-beam {
-    transform: scale(0.85) translateZ(0) !important; /* Add translateZ for hardware acceleration */
-    border-radius: 9999px !important;
-    filter: drop-shadow(0 0 4px rgba(255, 0, 0, 0.5)) !important; /* Add subtle glow */
-    will-change: transform, offset-distance !important; /* Hint to browser about what will animate */
-    -webkit-backface-visibility: hidden !important; /* Prevent flickering on Safari */
-    backface-visibility: hidden !important; /* Prevent flickering */
+    border-radius: 9999px !important; /* Ensure rounded corners */
   }
 }
+
+/* Shine animation for borders */
+@keyframes shine {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* Shiny border with proper cross-browser masking and outward glow */
+.shiny-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;               /* Expanded outside the element for outward glow */
+  border-radius: inherit;
+  
+  /* The shine effect */
+  background: linear-gradient(90deg,
+                rgba(255,255,255,0)   0%,
+                rgba(255,255,255,1) 50%,
+                rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+
+  /* MASK - makes the middle transparent */
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);          /* border-box */
+  mask-composite: exclude;
+
+  /* WebKit prefix is mandatory today */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;          /* == exclude */
+  
+  /* Add outward glow */
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.8));
+  pointer-events: none;      /* clicks pass through */
+  z-index: -1;
+}
+
+/* Additional outer glow effect */
+.shiny-border::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: transparent;
+  box-shadow: 
+    0 0 10px 2px rgba(255,255,255,0.5),
+    0 0 15px 5px rgba(255,255,255,0.2);
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* Pulsing glow animation for gradient borders */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(191,127,255,.2); }
+  50%     { box-shadow: 0 0 25px rgba(191,127,255,.6); }
+}
+
+/* ========= GradientBorder mask ========== */
+.gradient-frame::before {
+  content: "";
+  position: absolute;
+  inset: -2px; /* Position outside the container instead of inside */
+  border-radius: inherit;
+  background: linear-gradient(to top, #c61010 0%, #590202 100%); /* Changed top color to #590202 */
+  opacity: 0.8; /* Reduced opacity by 0.2 */
+  box-shadow: 0 0 18px rgba(198,16,16,.5); /* Changed shadow color to match red */
+  pointer-events: none;
+
+  /* Vis bare kant (masker ut content-box) */
+  padding: 1px;                    /* Updated to 1px */
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);        /* border-box     */
+  mask-composite: exclude;
+
+  /* WebKit-prefiks for Chrome/Safari */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;        /* = exclude      */
+}
+
+/* Pulsende glød (valgfritt) */
+@keyframes glowPulse {
+  0%,100% { box-shadow: 0 0 15px rgba(198,16,16,.2); } /* Changed glow color to match red */
+  50%     { box-shadow: 0 0 25px rgba(198,16,16,.6); } /* Changed glow color to match red */
+}
+.glow-pulse::before { animation: glowPulse 3s ease-in-out infinite; }
+
+/* Any additional CSS can be added below */

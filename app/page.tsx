@@ -4,7 +4,7 @@ import { DirectionalFade } from "@/components/directional-fade"
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient"
 import { ParticlesBackground } from "@/components/magicui/particles-background"
 import { TextAnimate } from "@/components/magicui/text-animate"
-import { BorderBeam } from "@/components/magicui/border-beam"
+import { GradientBorder } from "@/components/ui/gradient-border"
 import Script from "next/script"
 import Image from "next/image"
 import Link from "next/link"
@@ -44,40 +44,13 @@ export default function Home() {
         <div className="container mx-auto px-4">
           {/* Hero Section with centered content using flexbox */}
           <section className="min-h-screen flex flex-col items-center justify-center text-center">
-            <div 
-              className="relative inline-flex overflow-hidden announcement-banner rounded-full mb-[30px] sm:mb-0"
-              style={{
-                transform: 'translateZ(0)', // Force hardware acceleration
-                WebkitTransform: 'translateZ(0)', // Safari support
-                backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden',
-                perspective: '1000',
-                WebkitPerspective: '1000',
-              }}
-            >
-              {/* Dark glassmorphism pill content */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-black/15 text-white backdrop-blur-sm backdrop-saturate-[1.8] shadow-sm z-10 relative hover:bg-black/40 transition-colors duration-300">
-                <span>The Voyage Arise Site is Live Now</span>
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              </div>
-
-              {/* Red inner border beam that moves slower and is longer */}
-              <BorderBeam 
-                duration={8} 
-                size={18} 
-                initialOffset={25}
-                colorFrom="#ff0000" 
-                colorTo="#ff3333" 
-                className="!bg-gradient-to-r !from-red-600 !to-red-400 inner-border-beam !rounded-full"
-                style={{ 
-                  opacity: 0.8,
-                  width: "50px", // Make the beam longer but slightly smaller for mobile
-                  borderRadius: "9999px", // Ensure border radius works on all devices
-                  willChange: "transform", // Optimize for animations
-                  transform: "translateZ(0)", // Force hardware acceleration
-                  backfaceVisibility: "hidden" // Reduce flickering
-                }}
-              />
+            <div className="announcement-banner mb-[30px] sm:mb-0">
+              <GradientBorder pulsingGlow>
+                <div className="inline-flex items-center gap-2 px-[15px] py-[6px] rounded-full">
+                  <span className="text-[12px]">The Voyage Arise Site is Live Now</span>
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                </div>
+              </GradientBorder>
             </div>
 
             <h1 className="font-inter text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-12 leading-none normal-case font-bold overflow-visible relative">
